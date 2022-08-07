@@ -27,17 +27,18 @@ const updateOrRun = () => {
     if (!childProcess) {
         childProcess = cp.fork(config.webserverMainFile, { env: { PORT: 3000 } });
     } else {
-        const newChildProcess = cp.fork(config.webserverMainFile, { env: { PORT: '3001' } })
+        const newChildProcess = cp.fork(config.webserverMainFile, { env: { PORT: '3001' } }, { stdio: 'inherit' })
             .on('spawn', () => {
                 newChildProcess.kill();
             })
             .on('exit', (err, signal) => {
                 // Means Express application has crashed due to some error
-                if (signal === "SIGTERM") {
+                if (signal !== "SIGTERM") {
                     console.log('Could not update, Corrupted express application!')
                 } else {
                     childProcess.kill()
-                    childProcess = cp.fork(config.webserverMainFile, { env: { PORT: 3000 } });
+                    childProcess = cp.fork(config.webserverMainFile, { env: { PORT: 3000 } }, { stdio: 'inherit' });
+                    console.log('Updated webserver!')
                 }
             });
 

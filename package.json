@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start":"nodemon main.js --ignore webserver/ --inspect"
+    "start": "nodemon main.js --ignore webserver/ --inspect",
+    "start:prod": "node main.js"
   },
   "keywords": [],
   "author": "",

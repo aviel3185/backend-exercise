@@ -1,0 +1,20 @@
+version: "3"
+services:
+  web:
+    container_name: web
+    env_file:
+      - .docker/.docker.env
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    stdin_open: false
+    ports:
+      - "3000:3000"
+    restart: always
+    networks:
+      - web_network
+    volumes:
+      - ./webserver:/usr/src/app/webserver:rw
+
+networks:
+  web_network:
